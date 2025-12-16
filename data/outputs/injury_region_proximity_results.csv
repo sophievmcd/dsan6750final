@@ -1,0 +1,10 @@
+region,observed_distance_m,observed_distance_miles,p_value,plot_path
+WCS,569524.056888353,353.88573275277275,0,images/injury/WCS_distance_distribution.png
+WP,936899.2187092709,582.1620044285984,1,images/injury/WP_distance_distribution.png
+WM,999670.0140291156,621.1659562872856,0,images/injury/WM_distance_distribution.png
+WNC,775528.7280306089,481.89106126510745,0,images/injury/WNC_distance_distribution.png
+ENC,527718.617340883,327.9090449757218,0,images/injury/ENC_distance_distribution.png
+ESC,402437.365896298,250.0629084843486,0,images/injury/ESC_distance_distribution.png
+SA,731026.9843180366,454.2389682726827,1,images/injury/SA_distance_distribution.png
+MA,334789.4915692753,208.02848116589217,0,images/injury/MA_distance_distribution.png
+NE,309239.70408388315,192.15258416630655,0,images/injury/NE_distance_distribution.png

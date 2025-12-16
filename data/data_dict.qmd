@@ -1,0 +1,16 @@
+# Raw Data Dictionary
+
+Author: Sophie McDowall
+
+| doc name | details | source | link |
+|-------------------|------------------|------------------|------------------|
+| Airline_Delay_Cause.csv | Full Delay Dataset | BTS | https://www.transtats.bts.gov/ot_delay/OT_DelayCause1.asp?20=E |
+| Download_Column_Definitions.xlsx | Delay Dataset Dictionary | BTS | "" |
+| master_coord.csv | lat/long data with airport codes | BTS | https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FLL&QO_fu146_anzr=N8vn6v10%20f722146%20gnoyr5 |
+
+Military data available as shapefile/geoJson: https://data-usdot.opendata.arcgis.com/datasets/usdot::military-bases/about
+
+| Dataset | Source | Format |
+|-------------------------|------------------------|------------------------|
+| Military Bases (geoJSON) | U.S. Dept. of Transportation Bureau of Transportation Statistics | Multipolygon |
+| Transportation Incidents | National Transportation Safety Board | Point |
