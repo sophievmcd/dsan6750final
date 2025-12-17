@@ -26,73 +26,26 @@ execute:
   engine: knitr
 ---
 
+```{r, label="load-packages"}
+# packages
+library(tidyverse) |> suppressPackageStartupMessages()
+library(sf) |> suppressPackageStartupMessages()
+library(mapview) |> suppressPackageStartupMessages()
+library(spatstat) |> suppressPackageStartupMessages()
+library(jsonlite) |> suppressPackageStartupMessages()
+library(lubridate) |> suppressPackageStartupMessages()
+library(rnaturalearth) |> suppressPackageStartupMessages()
+library(ggplot2) |> suppressPackageStartupMessages()
+library(tibble) |> suppressPackageStartupMessages()
+library(spatstat.geom) |> suppressPackageStartupMessages()
+library(webshot2) |> suppressPackageStartupMessages()
+library(dplyr) |> suppressPackageStartupMessages()
+
+```
+
 ## Introduction
 
 The U.S. military relies on civilian infrastructure including highways, seaports, and airports to mobilize in the case of a national emergency or wartime. This research seeks to understand potential relationships between transportation incidents (accidents and delays) and proximity to military base, especially whether the length or likelihood of airline delays has any relation to military base proximity.
 
 1.  **Are there more or less transportation incidents near military bases?**
 2.  **How does proximity to military bases impact delays at civilian airports?**
-
-## Datasets
-
-| Dataset | Source | Format |
-|-------------------------|------------------------|------------------------|
-| Military Bases (geoJSON) | DOT Bureau of Transportation Statistics | Multipolygon |
-| Transportation Incidents (JSON) | National Transportation Safety Board | Point |
-| Airline Delays (CSV) | DOT Bureau of Transportation Statistics | Point - Needs geodata for airports |
-| Airport Location (CSV) | DOT Bureau of Transportation Statistics | Point |
-
-# Question 1: Are there more or less transportation incidents near military bases?
-
-## Approach
-In order to answer Question 1, I used data on the locations of U.S. military bases from the Department of Transportation and data on transportation incidents from the National Transportation Safety Board. After cleaning and combining the data as necessary for map visualizations and comparisons, I visualized the locations of bases and aviation incidents as shown in Figure 1. I excluded Alaska, Hawaii, and U.S. territories to focus only on the continental United States.
-
-INSERT FIGURE 1: Map of Aviation Incidents and Bases
-
-To understand the makeup and initial trends in the data, I did basic exploratory data analysis for all of the data and for only aviation incidents with injuries. Figures X-X below include basic descriptive statistics for the incidents dataset, and additional visualizations are included in the [images/eda](images/eda) folder. 
-
-INSERT FIGURES: EDA
-
-Next, I calculated the observed mean distance of all incidents to the nearest military base. After recording this value, I ran 100-500 Monte Carlo simulations (dependent on region -- less simulations because of the time required to run the analysis) and compared the distribution of Monte Carlo simulation results to the observed mean. I performed this test for the nine geographical regions of the U.S. as defined by the U.S. Census Bureau (CITATION) to be able to run shorter pieces of code. I initially ran the analysis for the West Pacific region (WA, OR, CA) and the West South Central region (TX, OK, AR, LA) and after getting completely opposite results with a $p$-value of 1 for the West Pacific and 0 for the West South Central I generalized the code to be able to run for all of the regions to compare.
-
-## Findings
-
-### Initial Findings - West Pacific and West South Central Regions
-I initially visualized and ran the proximity analysis for Washington, Oregon, and California only. This simulation testing resulted in a $p$-value of 1 based on 500 Monte Carlo simulations, indicating that **transportation incidents are *far less likely* to occur within close proximity to U.S. military bases.** This is depicted in Figures X-X.
-
-INSERT WP MAP AND GRAPH
-![West Coast Incident Map (Incidents in Blue, Military Bases in Red)](wc_map.png){width="29%"} ![](wc_distance_distribution_miles.png){width="65%"}.
-
-However, the same process ran for the West South Central Region including Texas, Oklahoma, Arkansas, and Louisiana yielded the opposite result as shown in Figure X. The results included a $p$-value of 0 based on 100 Monte Carlo simulations, indicating that **transportation incidents are *much more likely* to occur within close proximity to U.S. military bases.**
-
-![](wcs_distance_distribution_miles.png){width="65%"}.
-Figure X: Proximity Analysis Distribution for WSC Region
-
-### National Findings by Region
-After running the same analysis for all of the census regions, the simulations yielded the following results:
-
-$p$-value = 1: West Pacific, South Atlantic
-
-$p$-value \~ 0: All Others (LIST)
-
-For regions that were majority coastal states, the $p$-value was 1 and for majority in-land regions the $p$-value was 0. This raises questions as to the reporting requirements for aviation incidents, especially as related to the water incidents. To attempt to account for missed incidents due to the bounding box, I expanded the initial bounding box for the regional limitations, but got the same results. 
-
-## Initial Findings: All Regions
-
-![](regions_map.png){width="60%"}.
-
-$p$-value = 1: West Pacific, South Atlantic
-
-$p$-value \~ 0: All Others
-
-**Transportation incidents are *way less likely* to occur within close proximity to U.S. military bases along the coast and *way more likely* to occur within close proximity to non-coastal base regions.**
-
-## Next Steps
-
--   Assess for different modes (aviation, highway, marine incidents)
--   Answer Q2 using flight delay data (need to figure out geolocation issues)
--   Expand to consider regional impacts
--   Consider fatality levels of incidents
--   Run comparisons pre and post January 20, 2025 ()
-
-# Question 2: How does proximity to military bases impact delays at civilian airports?
