@@ -5,11 +5,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-    <meta name="author" content="Sophie McDowall">
-    <meta name="dcterms.date" content="2025-12-17">
-    <meta name="keywords" content="aviation, flight delay, military mobility">
 
-    <title>Civilian Transportation Impacts and Proximity U.S. Military Bases</title>
+    <title>data_dict</title>
     <style>
       code{white-space: pre-wrap;}
       span.smallcaps{font-variant: small-caps;}
@@ -21,41 +18,6 @@
         width: 0.8em;
         margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
         vertical-align: middle;
-      }
-      /* CSS for syntax highlighting */
-      html { -webkit-text-size-adjust: 100%; }
-      pre > code.sourceCode { white-space: pre; position: relative; }
-      pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-      pre > code.sourceCode > span:empty { height: 1.2em; }
-      .sourceCode { overflow: visible; }
-      code.sourceCode > span { color: inherit; text-decoration: inherit; }
-      div.sourceCode { margin: 1em 0; }
-      pre.sourceCode { margin: 0; }
-      @media screen {
-      div.sourceCode { overflow: auto; }
-      }
-      @media print {
-      pre > code.sourceCode { white-space: pre-wrap; }
-      pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-      }
-      pre.numberSource code
-        { counter-reset: source-line 0; }
-      pre.numberSource code > span
-        { position: relative; left: -4em; counter-increment: source-line; }
-      pre.numberSource code > span > a:first-child::before
-        { content: counter(source-line);
-          position: relative; left: -1em; text-align: right; vertical-align: baseline;
-          border: none; display: inline-block;
-          -webkit-touch-callout: none; -webkit-user-select: none;
-          -khtml-user-select: none; -moz-user-select: none;
-          -ms-user-select: none; user-select: none;
-          padding: 0 4px; width: 4em;
-        }
-      pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-      div.sourceCode
-        {   }
-      @media screen {
-      pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
       }
     </style>
 
@@ -132,7 +94,7 @@
             // if location was not changed in 100 ms, then there is no history back
             if(currentUrl === window.location.href){              
                 // redirect to site root
-                window.location.href = "index.html";
+                window.location.href = "../index.html";
             }
         }, 100);
       }
@@ -149,139 +111,114 @@
     </script>
 
     
-<script src="site_libs/manuscript-notebook/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-4f72c1afe59a4edb82ad8e59b4b7d712.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-575b51fb5e8da2a7cc0ded7321a6503a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/manuscript-notebook/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-4f72c1afe59a4edb82ad8e59b4b7d712.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-575b51fb5e8da2a7cc0ded7321a6503a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
      <script async="" src="https://hypothes.is/embed.js"></script>
 <script>
   window.document.addEventListener("DOMContentLoaded", function (_event) {
     document.body.classList.add('hypothesis-enabled');
   });
 </script>  
-      <meta name="citation_title" content="Civilian Transportation Impacts and Proximity U.S. Military Bases">
-<meta name="citation_abstract" content="United States airline traffic has been significantly disrupted this year due to personnel cuts and the government shutdown. Aviation is critical for transportation and continuity of supply chain functioning. Civilian infrastructure also underpins the ability of the U.S. military to mobilize forces. In my analysis, I will use BTS airline delay data to identify relationships between commercial air traffic delays and proximity to U.S. military bases. Through this analysis, I aim to understand the prioritization of flights and the areas of highest impact resulting from cuts to TSA and air traffic control earlier this year, along with the potential impact of being nearer to a military base and whether these airports are prioritized in times of extreme delays.
-">
-<meta name="citation_keywords" content="aviation,flight delay,military mobility">
-<meta name="citation_author" content="Sophie McDowall">
-<meta name="citation_publication_date" content="2025-12-17">
-<meta name="citation_cover_date" content="2025-12-17">
-<meta name="citation_year" content="2025">
-<meta name="citation_online_date" content="2025-12-17">
-<meta name="citation_language" content="en">
-<meta name="citation_reference" content="citation_title=Strategies for the development of volcanic hazard maps in monogenetic volcanic fields: The example of La Palma (Canary Islands);,citation_author=José Marrero;,citation_author=Alicia García;,citation_author=Manuel Berrocoso;,citation_author=Ángeles Llinares;,citation_author=Antonio Rodríguez-Losada;,citation_author=R. Ortiz;,citation_publication_date=2019-07;,citation_cover_date=2019-07;,citation_year=2019;,citation_doi=10.1186/s13617-019-0085-5;,citation_volume=8;,citation_journal_title=Journal of Applied Volcanology;">
-</head>
+      </head>
 
   <body class="quarto-notebook quarto-light">
     <div id="quarto-embed-header" class="headroom fixed-top bg-primary">
       
       <a onclick="window.quartoBackToArticle(); return false;" class="btn btn-primary quarto-back-link" href=""><i class="bi bi-caret-left"></i> Back to Article</a>
-      <h6><i class="bi bi-journal-code"></i> Article Notebook</h6>
+      <h6><i class="bi bi-journal-code"></i> Raw Data Dictionary</h6>
 
-            <a href="./index.qmd" class="btn btn-primary quarto-download-embed" download="index.qmd">Download Source</a>
+            <a href="../data/data_dict.qmd" class="btn btn-primary quarto-download-embed" download="data_dict.qmd">Download Source</a>
           </div>
 
-     <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-body">
-      <h1 class="title">Civilian Transportation Impacts and Proximity U.S. Military Bases</h1>
-          </div>
-
-    
-    <div class="quarto-title-meta-container">
-      <div class="quarto-title-meta-column-start">
-            <div class="quarto-title-meta-author">
-          <div class="quarto-title-meta-heading">Author</div>
-          <div class="quarto-title-meta-heading">Affiliation</div>
-          
-                <div class="quarto-title-meta-contents">
-            <p class="author">Sophie McDowall <a href="mailto:svm37@georgetown.edu" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
-          </div>
-                <div class="quarto-title-meta-contents">
-                    <p class="affiliation">
-                        Georgetown University Masters in Data Science and Analytics
-                      </p>
-                  </div>
-                    </div>
-        
-        <div class="quarto-title-meta">
-
-                      
-                <div>
-            <div class="quarto-title-meta-heading">Published</div>
-            <div class="quarto-title-meta-contents">
-              <p class="date">December 17, 2025</p>
-            </div>
-          </div>
-          
-                
-              </div>
-      </div>
-      <div class="quarto-title-meta-column-end quarto-other-formats-target">
-      </div>
-    </div>
-
-    <div>
-      <div class="abstract">
-        <div class="block-title">Abstract</div>
-        <p>United States airline traffic has been significantly disrupted this year due to personnel cuts and the government shutdown. Aviation is critical for transportation and continuity of supply chain functioning. Civilian infrastructure also underpins the ability of the U.S. military to mobilize forces. In my analysis, I will use BTS airline delay data to identify relationships between commercial air traffic delays and proximity to U.S. military bases. Through this analysis, I aim to understand the prioritization of flights and the areas of highest impact resulting from cuts to TSA and air traffic control earlier this year, along with the potential impact of being nearer to a military base and whether these airports are prioritized in times of extreme delays.</p>
-      </div>
-    </div>
-
-    <div>
-      <div class="keywords">
-        <div class="block-title">Keywords</div>
-        <p>aviation, flight delay, military mobility</p>
-      </div>
-    </div>
-
-    <div class="quarto-other-links-text-target">
-    </div>  </div>
-</header><div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+     <div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
 <div id="quarto-sidebar-toc-left" class="sidebar toc-left">
   <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
+  <li><a href="#raw-data-dictionary" id="toc-raw-data-dictionary" class="nav-link active" data-scroll-target="#raw-data-dictionary">Raw Data Dictionary</a></li>
   </ul>
 </nav>
 </div>
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
 </div>
-<main class="content quarto-banner-title-block" id="quarto-document-content">      
-
-       <div class="cell-container"><div class="cell-decorator"><pre>In [1]:</pre></div><div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># packages</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="sc">|&gt;</span> <span class="fu">suppressPackageStartupMessages</span>()</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf) <span class="sc">|&gt;</span> <span class="fu">suppressPackageStartupMessages</span>()</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapview) <span class="sc">|&gt;</span> <span class="fu">suppressPackageStartupMessages</span>()</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat) <span class="sc">|&gt;</span> <span class="fu">suppressPackageStartupMessages</span>()</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite) <span class="sc">|&gt;</span> <span class="fu">suppressPackageStartupMessages</span>()</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate) <span class="sc">|&gt;</span> <span class="fu">suppressPackageStartupMessages</span>()</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rnaturalearth) <span class="sc">|&gt;</span> <span class="fu">suppressPackageStartupMessages</span>()</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2) <span class="sc">|&gt;</span> <span class="fu">suppressPackageStartupMessages</span>()</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble) <span class="sc">|&gt;</span> <span class="fu">suppressPackageStartupMessages</span>()</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatstat.geom) <span class="sc">|&gt;</span> <span class="fu">suppressPackageStartupMessages</span>()</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(webshot2) <span class="sc">|&gt;</span> <span class="fu">suppressPackageStartupMessages</span>()</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="sc">|&gt;</span> <span class="fu">suppressPackageStartupMessages</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div></div>
-<section id="introduction" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
-<p>The U.S. military relies on civilian infrastructure including highways, seaports, and airports to mobilize in the case of a national emergency or wartime. This research seeks to understand potential relationships between transportation incidents (accidents and delays) and proximity to military base, especially whether the length or likelihood of airline delays has any relation to military base proximity.</p>
-<ol type="1">
-<li><strong>Are there more or less transportation incidents near military bases?</strong></li>
-<li><strong>How does proximity to military bases impact delays at civilian airports?</strong></li>
-</ol>
+<main class="content quarto-banner-title-block" id="quarto-document-content">      <section id="raw-data-dictionary" class="level1">
+<h1>Raw Data Dictionary</h1>
+<p>Author: Sophie McDowall</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 26%">
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 24%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>doc name</th>
+<th>details</th>
+<th>source</th>
+<th>link</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Airline_Delay_Cause.csv</td>
+<td>Full Delay Dataset</td>
+<td>BTS</td>
+<td>https://www.transtats.bts.gov/ot_delay/OT_DelayCause1.asp?20=E</td>
+</tr>
+<tr class="even">
+<td>Download_Column_Definitions.xlsx</td>
+<td>Delay Dataset Dictionary</td>
+<td>BTS</td>
+<td>“”</td>
+</tr>
+<tr class="odd">
+<td>master_coord.csv</td>
+<td>lat/long data with airport codes</td>
+<td>BTS</td>
+<td>https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FLL&amp;QO_fu146_anzr=N8vn6v10%20f722146%20gnoyr5</td>
+</tr>
+</tbody>
+</table>
+<p>Military data available as shapefile/geoJson: https://data-usdot.opendata.arcgis.com/datasets/usdot::military-bases/about</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 32%">
+<col style="width: 32%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dataset</th>
+<th>Source</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Military Bases (geoJSON)</td>
+<td>U.S. Dept. of Transportation Bureau of Transportation Statistics</td>
+<td>Multipolygon</td>
+</tr>
+<tr class="even">
+<td>Transportation Incidents</td>
+<td>National Transportation Safety Board</td>
+<td>Point</td>
+</tr>
+</tbody>
+</table>
 </section>
      </main>
 <!-- /main column -->  <script id="quarto-html-after-body" type="application/javascript">
