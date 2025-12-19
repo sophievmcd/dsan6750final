@@ -1,5 +1,5 @@
 ---
-title: Civilian Transportation Impacts and Proximity U.S. Military Bases
+title: Civilian Transportation Incidents and Proximity to U.S. Military Bases
 author:
   - name: Sophie McDowall
     corresponding: true
