@@ -8,25 +8,18 @@ author:
       - Georgetown University Masters in Data Science and Analytics
 keywords:
   - aviation
-  - flight delay
+  - infrastructure incidents
+  - aviation incidents
   - military mobility
 abstract: |
-  United States airline traffic has been significantly disrupted this year due to personnel cuts and the government shutdown. Aviation is critical for transportation and continuity of supply chain functioning. Civilian infrastructure also underpins the ability of the U.S. military to mobilize forces. In my analysis, I will use BTS airline delay data to identify relationships between commercial air traffic delays and proximity to U.S. military bases. Through this analysis, I aim to understand the prioritization of flights and the areas of highest impact resulting from cuts to TSA and air traffic control earlier this year, along with the potential impact of being nearer to a military base and whether these airports are prioritized in times of extreme delays. 
-plain-language-summary: |
-  TO FILL
+  United States airline traffic has been significantly disrupted this year due to personnel cuts and the government shutdown. Aviation is critical for transportation and continuity of supply chain functioning. Civilian infrastructure also underpins the ability of the U.S. military to mobilize forces. In my analysis, I will use BTS airline delay data to identify relationships between commercial air traffic delays and aviation incidents and their proximity to U.S. military bases. Through this analysis, I aim to understand the trends surrounding aviation near military bases including trends in incident occurence rates and commercial flight delay impacts. 
+
 date: last-modified
 bibliography: references.bib
 number-sections: true
-format:
-  html:
-    toc: true
-  pdf: default
-
-execute:
-  engine: knitr
 ---
 
-```{r, label="load-packages"}
+```{r, label="load-packages", include=FALSE}
 # packages
 library(tidyverse) |> suppressPackageStartupMessages()
 library(sf) |> suppressPackageStartupMessages()
@@ -49,3 +42,586 @@ The U.S. military relies on civilian infrastructure including highways, seaports
 
 1.  **Are there more or less transportation incidents near military bases?**
 2.  **How does proximity to military bases impact delays at civilian airports?**
+
+## Datasets
+
+| Dataset | Source | Format | Link |
+|-------------------------|------------------------|------------------------|------------------------|
+| Military Bases (geoJSON) | DOT Bureau of Transportation Statistics | Multipolygon | [https://data-usdot.opendata.arcgis.com/datasets/usdot::military-bases/about](https://data-usdot.opendata.arcgis.com/datasets/usdot::military-bases/about)
+| Transportation Incidents (JSON) | National Transportation Safety Board | Point | [https://data.ntsb.gov/carol-main-public/basic-search](https://data.ntsb.gov/carol-main-public/basic-search)|
+| Airline Delays (CSV) | DOT Bureau of Transportation Statistics | Point - Needs geodata for airports | [https://www.transtats.bts.gov/ot_delay/OT_DelayCause1.asp?20=E](https://www.transtats.bts.gov/ot_delay/OT_DelayCause1.asp?20=E)|
+| Airport Location (CSV) | DOT Bureau of Transportation Statistics | Point | [https://geodata.bts.gov/datasets/usdot::aviation-facilities/explore](https://geodata.bts.gov/datasets/usdot::aviation-facilities/explore)|
+
+```{r, label="load-data-and-map", include=FALSE}
+# Load base data and visualize
+bases_sf <- st_read("data/raw/military_bases.geojson")
+
+# Load incident data, combine
+cases_20to25 <- fromJSON("data/raw/cases2020-2025.json", flatten = TRUE)
+cases_15to19 <- fromJSON("data/raw/cases2015-2019.json", flatten = TRUE)
+
+# combine all incident data for 2015-2025
+all_data <- bind_rows(cases_20to25, cases_15to19)
+all_data_clean <- all_data |>
+  filter(!is.na(cm_Latitude), !is.na(cm_Longitude), !is.na(cm_highestInjury)) |>
+  select(-cm_vehicles) 
+
+# sf points conversion
+cases_sf <- st_as_sf(
+  all_data_clean,
+  coords = c("cm_Longitude", "cm_Latitude"),
+  crs = 4326,
+  remove = FALSE
+)
+
+# combine, filter, and adjust to continental US with buffer
+# transform and make bases centroids
+bases_3857  <- st_transform(bases_sf, 3857)
+bases_valid <- st_make_valid(bases_3857)
+bases_centroids <- st_centroid(bases_valid)
+
+#transform cases
+cases_3857 <- st_transform(cases_sf, 3857)
+
+# only conus
+us_states <- ne_states(country = "United States of America", returnclass = "sf")
+conus <- us_states |>
+  filter(!name %in% c("Alaska", "Hawaii", "Puerto Rico")) |> 
+  st_union()
+
+conus_3857 <- st_transform(conus, 3857)
+
+# filter
+cases_conus <- st_intersection(cases_3857, conus_3857)
+bases_conus <- st_intersection(bases_centroids, conus_3857)
+
+# add buffer
+buffer_dist <- 1000000
+conus_buffered_100km <- st_buffer(conus_3857, dist = buffer_dist)
+conus_buffered_100km <- st_make_valid(conus_buffered_100km)
+
+# filter
+cases_conus <- st_intersection(cases_3857, conus_3857)
+bases_conus <- st_intersection(bases_centroids, conus_3857)
+
+# no map to allow for generation
+# mapview(cases_conus) + mapview(bases_conus, col.regions="red")
+```
+
+# Question 1: Are there more or less transportation incidents near military bases?
+
+## Approach
+
+In order to answer Question 1, I used data on the locations of U.S. military bases from the Department of Transportation and data on transportation incidents from the National Transportation Safety Board. After cleaning and combining the data as necessary for map visualizations and comparisons, I visualized the locations of bases and aviation incidents as shown in Figure 1. I excluded Alaska, Hawaii, and U.S. territories to focus only on the continental United States.
+
+To understand the makeup and initial trends in the data, I did basic exploratory data analysis for all of the data and for only aviation incidents with injuries.
+
+### Basic Dataset Statistics - All Incidents
+#### Temporal Visualization - All Incidents
+
+By visualizing the temporal nature of the data, incident patterns or lack thereof can be identified. For all incidents, there has been a slight decline in number in recent years vs. the previoius five years, but this is also based on incomplete data for 2025. When looking at monthly trends, there is a much higher number of reported incidents in the summer months. This could be due to higher rates of travel, although it would seem that winter months are more dangerous in terms of weather conditions. This may lead to greater caution by operators.
+```{r, label="basic-incident-eda-1-1", echo=FALSE}
+# date time conversion/columns
+ all_data_dates <- all_data_clean |>
+    mutate(
+        event_date = ymd_hms(cm_eventDate),
+        event_year = year(event_date),
+        event_month = month(event_date, label = TRUE, abbr = TRUE)
+    )
+
+# histogram by year
+ggplot(all_data_dates, aes(x = event_year)) +
+  geom_histogram(binwidth = 1, fill = "steelblue", color = "white") +
+  theme_classic() +
+  labs(
+    title = "Incidents Per Year (2015-2025)",
+    x = "Year",
+    y = "Count of Incidents"
+  )
+
+ggsave(
+  "images/eda/incidents_yearly_histogram.png",
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+```
+
+Figure 1: Histogram of Incidents by Year from 2015-2025
+
+```{r, label="basic-incident-eda-1-2", echo=FALSE}
+
+# histogram by month 
+ggplot(all_data_dates, aes(x = event_month)) +
+  geom_bar(fill = "steelblue", color = "white") +
+  theme_classic() +
+  labs(
+    title = "Incidents Per Month (2015-2025)",
+    x = "Month",
+    y = "Count of Incidents"
+  )
+
+ggsave(
+  "images/eda/incidents_monthly_histogram.png",
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+```
+
+Figure 2: Monthly Distribution of Incidents for 2015-2025
+
+```{r, label="basic-incident-eda-1-3", echo=FALSE}
+# heat map by year and month 
+all_data_dates %>%
+  count(event_year, event_month) |>
+  ggplot(aes(x = event_month, y = factor(event_year), fill = n)) +
+  geom_tile(color = "white") +
+  scale_fill_viridis_c(option = "C") +
+  labs(
+    title = "Incidents by Month and Year",
+    x = "Month",
+    y = "Year",
+    fill = "Count"
+  ) +
+  theme_classic()
+
+ggsave(
+  "images/eda/year_month_heatmap.png",
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+```
+
+Figure 3: Heatmap distribution of monthly incidents by year. July 2017 saw the most incidents reported.
+
+#### Incidents by Type - All Incidents
+```{r, label="basic-incident-eda-2-1", echo=FALSE}
+
+all_data_clean |>
+  count(cm_mode) |>
+  arrange(desc(n))
+
+# hist on year and mode
+year_mode_counts <- all_data_dates |>
+  count(event_year, cm_mode, name = "count") |>
+  arrange(event_year, cm_mode)
+
+ggplot(year_mode_counts, aes(x = event_year, y = count, color = cm_mode)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  theme_classic() +
+  labs(
+    title = "Incident Counts per Year by Mode",
+    x = "Year",
+    y = "Number of Incidents",
+    color = "Mode"
+  ) +
+  scale_x_continuous(breaks = unique(year_mode_counts$event_year))
+
+ggsave(
+  "images/eda/year_counts_bymode.png",
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+```
+
+Figure 4: Line plot of temporal trends in incident count by Mode. Aviation incidents account for the vast majority of incidents reported.
+
+```{r, label="basic-incident-eda-2-2", echo=FALSE}
+# non-aviation
+ggplot(
+  filter(year_mode_counts, cm_mode != "Aviation"),
+  aes(x = event_year, y = count, color = cm_mode)
+) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  theme_classic() +
+  labs(
+    title = "Incident Counts per Year (Non-Aviation Modes)",
+    x = "Year",
+    y = "Number of Incidents",
+    color = "Mode"
+  ) +
+  scale_x_continuous(breaks = unique(year_mode_counts$event_year))
+
+ggsave(
+  "images/eda/non-aviation-incidents-year-hist.png",
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+
+```
+
+Figure 4: Line plot of temporal trends in incident count by Mode, excluding aviation for more minute visual of other modes.
+
+```{r, label="basic-incident-eda-2-3", echo=FALSE}
+# Categories
+all_data_clean |>
+  count(cm_highestInjury) |>
+  arrange(desc(n))
+
+ggplot(all_data_clean, aes(x = cm_highestInjury)) +
+  geom_bar(fill = "firebrick", color = "white") +
+  theme_classic() +
+  labs(
+    title = "Distribution of Highest Injury Categories",
+    x = "Highest Injury",
+    y = "Count"
+  )
+
+ggsave(
+  "images/eda/injury_cats_dist.png",
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+
+```
+
+Figure 5: Counts of Incidents by Injury Type
+
+### Basic Dataset Statistics - Only Incidents with Injuries
+Based on the high number of incidents without injuries, the following plots narrow the focus to only incidents that had any level of injury reported.
+
+#### Temporal Visualization - Incidents with Injuries
+```{r, label="basic-incident-eda-3-1", echo=FALSE}
+
+# Excluding non injury incidents
+
+# injury conversions
+injury_df <- all_data_dates |>
+  filter(cm_highestInjury != "None")
+
+# histogram by year
+ggplot(injury_df, aes(x = event_year)) +
+  geom_histogram(binwidth = 1, fill = "steelblue", color = "white") +
+  theme_classic() +
+  labs(
+    title = "Incidents with Injuries per Year (2015-2025)",
+    x = "Year",
+    y = "Count of Incidents"
+  )
+
+ggsave(
+  "images/eda/incidents_yearly_hist_injuries.png",
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+```
+
+Figure 6: Histogram of Incidents with Injuries by Year from 2015-2025
+
+```{r, label="basic-incident-eda-3-2", echo=FALSE}
+# histogram by month 
+ggplot(injury_df, aes(x = event_month)) +
+  geom_bar(fill = "steelblue", color = "white") +
+  theme_classic() +
+  labs(
+    title = "Incidents with Injuries per month (2015-2025)",
+    x = "Month",
+    y = "Count of Incidents"
+  )
+
+ggsave(
+  "images/eda/incidents_monthly_hist_injuries.png",
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+```
+
+Figure 7: Monthly Distribution of Incidents with Injuries for 2015-2025
+
+```{r, label="basic-incident-eda-3-3", echo=FALSE}
+# heat map by year and month 
+injury_df |>
+  count(event_year, event_month) |>
+  ggplot(aes(x = event_month, y = factor(event_year), fill = n)) +
+  geom_tile(color = "white") +
+  scale_fill_viridis_c(option = "C") +
+  labs(
+    title = "Incidents with Injuries by Month and Year (2015-2025)",
+    x = "Month",
+    y = "Year",
+    fill = "Count"
+  ) +
+  theme_classic()
+
+ggsave(
+  "images/eda/year_month_heatmap_injuries.png",
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+```
+
+Figure 8: Heatmap distribution of monthly incidents by year. July 2017 saw the most incidents reported.
+
+#### Incidents by Type - Incidents with Injuries
+```{r, label="basic-incident-eda-4-1", echo=FALSE}
+# hist on year and mode
+injuries_year_mode_counts <- injury_df |>
+  count(event_year, cm_mode, name = "count") |>
+  arrange(event_year, cm_mode)
+
+ggplot(injuries_year_mode_counts, aes(x = event_year, y = count, color = cm_mode)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  theme_classic() +
+  labs(
+    title = "Incident with Injuries Counts per Year by Mode",
+    x = "Year",
+    y = "Number of Incidents with Injuries",
+    color = "Mode"
+  ) +
+  scale_x_continuous(breaks = unique(injuries_year_mode_counts$event_year))
+
+ggsave(
+  "images/eda/injuries_year_counts_bymode.png",
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+```
+
+Figure 9: Line plot of temporal trends in incident count by Mode. Aviation incidents account for the vast majority of incidents reported.
+
+```{r, label="basic-incident-eda-4-2", echo=FALSE}
+# non-aviation
+ggplot(
+  filter(injuries_year_mode_counts, cm_mode != "Aviation"),
+  aes(x = event_year, y = count, color = cm_mode)
+) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  theme_classic() +
+  labs(
+    title = "Incident with Injuries Counts per Year (Non-Aviation Modes)",
+    x = "Year",
+    y = "Number of Incidents with Injuries",
+    color = "Mode"
+  ) +
+  scale_x_continuous(breaks = unique(injuries_year_mode_counts$event_year))
+
+ggsave(
+  "images/eda/injuries-non-aviation-incidents-year-hist.png",
+  width = 8,
+  height = 6,
+  dpi = 300
+)
+
+```
+
+Figure 10: Line plot of temporal trends in incident count for only incidents with injuries by Mode, excluding aviation for more minute visual of other modes.
+
+### Monte Carlo Simulations for Spatial Relationships Between Incidents and Military Bases
+
+Next, I calculated the observed mean distance of all incidents to the nearest military base. After recording this value, I ran 100-500 Monte Carlo simulations (dependent on region -- less simulations because of the time required to run the analysis) and compared the distribution of Monte Carlo simulation results to the observed mean. I performed this test for the nine geographical regions of the U.S. individyally as defined by the U.S. Census Bureau to be able to run shorter pieces of code. I initially ran the analysis for the West Pacific region (WA, OR, CA) and the West South Central region (TX, OK, AR, LA) and after getting completely opposite results with a $p$-value of 1 for the West Pacific and 0 for the West South Central I generalized the code to be able to run for all of the regions to compare. For publication purposes in the Quarto Manuscript, I ran on the slightly smaller injury-only dataset. Separately, I ran the full dataset and included those visuals for comparison.
+
+![Figure 11: U.S. Census Regions, Map from U.S. Census Bureau](images/regions_map.png). 
+
+```{r, label="Census-regions-and-generalized-sim-function", include=FALSE}
+
+region_states <- list(
+  WCS = c("Texas", "Oklahoma", "Arkansas", "Louisiana"),
+  WP = c("California", "Oregon", "Washington"),
+  WM = c("Montana", "Idaho", "Wyoming", "Nevada", "Utah", "Colorado", "Arizona", "New Mexico"),
+  WNC = c("North Dakota", "South Dakota", "Minnesota", "Nebraska", "Kansas", "Iowa", "Kansas", "Missouri"),
+  ENC = c("Wisconsin", "Michigan", "Illinois", "Indiana", "Ohio"),
+  ESC = c("Kentucky", "Tennessee", "Missippi", "Alabama"),
+  SA = c("Florida", "Georgia", "South Carolina", "North Carolina", "Virginia", "West Virginia", "Washington D.C.", "Maryland", "Delaware"),
+  MA = c("New York", "Pennsylvania", "New Jersey"),
+  NE = c("Connecticut", "Massachussetts", "Vermont", "New Hampshire", "Rhode Island", "Maine")
+)
+
+message("Regions as Defined By U.S. Census Bureau:")
+print(region_states)
+
+region_keys <- names(region_states)
+results_list <- list()
+
+meters_to_miles <- 0.000621371
+
+get_region_states <- function(region_key) {
+  region_states[[region_key]]
+}
+
+
+run_region_analysis <- function(
+    region_states,
+    region_label,
+    cases_3857,
+    bases_centroids,
+    us_states,
+    N = 500,
+    output_dir = "images/"
+) {
+  
+  message("=== Running analysis for region: ", region_label, " ===")
+  
+  # Create region polygon
+  region_poly <- us_states |>
+    filter(name %in% region_states) |>
+    st_union() |>
+    st_transform(3857)
+  
+  message("States: ", region_states)
+  
+  # Clip cases + bases to region
+  cases_region <- st_intersection(cases_3857, region_poly)
+  bases_region <- st_intersection(bases_centroids, region_poly)
+  
+  if (nrow(cases_region) == 0) {
+    stop("No incident cases found in this region.")
+  }
+  if (nrow(bases_region) == 0) {
+    stop("No bases found in this region.")
+  }
+  
+  message("Cases in region: ", nrow(cases_region))
+  message("Bases in region: ", nrow(bases_region))
+  
+  # Compute observed mean distance
+  nearest_idx <- st_nearest_feature(cases_region, bases_region)
+  nearest_d <- st_distance(cases_region, bases_region[nearest_idx, ])
+  obs_mean_dist <- mean(as.numeric(nearest_d))
+  obs_miles <- obs_mean_dist * meters_to_miles
+  
+  message("Observed mean distance (miles): ", round(obs_miles, 2))
+  
+  # Monte Carlo Simulations
+  win_region <- as.owin(region_poly)
+  sim_dists <- numeric(N)
+  
+  pb <- txtProgressBar(min = 0, max = N, style = 3)
+  
+  for (i in seq_len(N)) {
+    sim_ppp <- rpoint(n = nrow(cases_region), win = win_region)
+    sim_sf  <- st_as_sf(sim_ppp) |> st_set_crs(3857)
+    
+    # Compute simulated mean distance
+    nearest_idx_sim <- st_nearest_feature(sim_sf, bases_region)
+    d_sim <- st_distance(sim_sf, bases_region[nearest_idx_sim, ])
+    sim_dists[i] <- mean(as.numeric(d_sim))
+    
+    setTxtProgressBar(pb, i)
+  }
+  close(pb)
+  
+  # Convert sims to miles
+
+  sim_df <- tibble(value_m = sim_dists)
+  sim_df <- sim_df |> mutate(value = value_m * meters_to_miles)
+
+  # Compute p-value
+  p_value <- mean(sim_df$value <= obs_miles)
+  
+  message("P-value: ", p_value)
+  
+  # Plot and save
+  p <- ggplot(sim_df, aes(x = value)) +
+    geom_density(fill = "lightblue", alpha = 0.5) +
+    geom_vline(xintercept = obs_miles,
+               color = "red",
+               linetype = "dashed",
+               linewidth = 1.1) +
+    theme_classic() +
+    labs(
+      title = paste0("Distance to Nearest Base: ", region_label),
+      subtitle = paste0("Observed vs Simulated (N=", N, ")"),
+      x = "Mean Distance (miles)"
+    )
+  
+  # ensure output directory
+  if (!dir.exists(output_dir)) dir.create(output_dir)
+  
+  output_path <- paste0(output_dir, region_label, "_distance_distribution.png")
+  
+  ggsave(
+    output_path,
+    p,
+    width = 8,
+    height = 6,
+    dpi = 300
+  )
+  
+  message("Plot saved to: ", output_path)
+  
+  # Return results
+  return(list(
+    region = region_label,
+    observed_distance_m = obs_mean_dist,
+    observed_distance_miles = obs_miles,
+    p_value = p_value,
+    plot_path = output_path
+  ))
+}
+```
+
+```{r, label="running-mc-for-injury-only", include=FALSE}
+
+injury_cases_3857 <- cases_3857 |>
+  filter(cm_highestInjury != "None")
+
+for (region in region_keys){
+  message("Running region: ", region)
+
+  results_list[[region]] <- run_region_analysis(
+  region_states = get_region_states(region),
+  region_label = region,
+  cases_3857 = injury_cases_3857,
+  bases_centroids = bases_centroids,
+  us_states = us_states,
+  N = 100,
+  output_dir = "images/injury/"
+)
+}
+
+results_df <- bind_rows(results_list)
+write_csv(results_df, "data/outputs/injury_region_proximity_results.csv")
+```
+
+## Findings
+
+### Initial Findings - West Pacific and West South Central Regions
+
+I initially visualized and ran the proximity analysis for Washington, Oregon, and California only. This simulation testing resulted in a $p$-value of 1 based on 100 Monte Carlo simulations, indicating that **transportation incidents are *far less likely* to occur within close proximity to U.S. military bases.**.
+
+![Figure 12: West Pacific Region Incident Map (Incidents in Blue, Military Bases in Red). Screenshot of mapview generation for rendering ability in Quarto Manuscript](images/wc_map.png){width="29%"} 
+
+![Figure 13: Monte Carlo Simulation Results - Distance to Nearest Base, West Pacific Region (All Incidents)](images/all/WP_distance_distribution.png){}
+
+![Figure 14: Monte Carlo Simulation Results - Distance to Nearest Base, West Pacific Region (Incidents with Injuries)](images/injury/WP_distance_distribution.png){}
+
+However, the same process ran for the West South Central Region including Texas, Oklahoma, Arkansas, and Louisiana yielded the opposite result as shown in Figure X. The results included a $p$-value of 0 based on 100 Monte Carlo simulations, indicating that **transportation incidents are *much more likely* to occur within close proximity to U.S. military bases.**
+
+![Figure 15: Monte Carlo Simulation Results - Distance to Nearest Base, West South Central Region (All Incidents)](images/all/WCS_distance_distribution.png){}
+
+
+![Figure 16: Monte Carlo Simulation Results - Distance to Nearest Base, West South Central Region (Incidents with Injuries)](images/injury/WCS_distance_distribution.png){}
+
+
+### National Findings by Region
+
+After running the same analysis for all of the census regions, the simulations yielded the following results:
+
+$p$-value = 1: West Pacific, South Atlantic
+
+$p$-value \~ 0: West South Central, West North Central, West Mountain, Middle Atlantic, New England, East South Central
+
+For regions that were majority coastal states, the $p$-value was 1 and for majority in-land regions the $p$-value was 0. This raises questions as to the reporting requirements for aviation incidents, especially as related to the water incidents. To attempt to account for missed incidents due to the bounding box, I expanded the initial bounding box for the regional limitations, but got the same results.
+
+*Note: The code for each of these visualizations was run as a function that produces the resulting visuals. Code is visible in Article Notebook*
+
+# Conclusion and Next Steps
+
+Based on the above analysis, **transportation incidents are *far less likely* to occur within close proximity to U.S. military bases along the coast and *far more likely* to occur within close proximity to non-coastal base regions.**
+
+This is an interesting result. One possible explanation for this trend is that the reporting requirements for coastal states do not extend much beyond the coast, meaning that some incidents are not being accounted for which may be in closer to proximity to military bases. The approach of narrowing incidents based on state may also have unintentionally excluded incidents that happened outside state boundaries over the oceans but were in close proximity. Another potential explanation is that military bases are generally situated in areas that are not the most concentrated urban centers. In coastal regions, urban centers are generally very high in population. In less populated states, population may be closer to military bases, leading to more air traffic in proximity to the bases. This trend could also depend on the type of base. If some bases are specific to air training, it is likely that there would be more incidents. A continuation of this research could do an in-depth analysis that identifies the general purpose of each base (as available, at least accounting for the main operating military branch) to assess this hypothesis. 
+
+Due to time constraints, I was unable to finish answering the second question on whether air traffic delays are more common at airports that are in close proximity to a military base. This would be a useful analysis for understanding temporal changes related to changing policy and practice related to staffing for the TSA and air traffic roles. It would also identify potential impacts on commercial traffic during periods of military concern or potential military mobilization. 

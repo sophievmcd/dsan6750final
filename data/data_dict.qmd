@@ -1,6 +1,8 @@
-# Raw Data Dictionary
-
-Author: Sophie McDowall
+---
+title: "Data Dictionary"
+author: "Sophie McDowall"
+notebook: false
+---
 
 | doc name | details | source | link |
 |-------------------|------------------|------------------|------------------|

@@ -1,0 +1,87 @@
+<sub-article article-type="notebook" id="nb-3">
+<front-stub>
+</front-stub>
+
+<body>
+<sec id="raw-data-dictionary">
+  <title>Raw Data Dictionary</title>
+  <p>Author: Sophie McDowall</p>
+  <table-wrap>
+    <table>
+      <colgroup>
+        <col width="26%" />
+        <col width="25%" />
+        <col width="25%" />
+        <col width="25%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th>doc name</th>
+          <th>details</th>
+          <th>source</th>
+          <th>link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Airline_Delay_Cause.csv</td>
+          <td>Full Delay Dataset</td>
+          <td>BTS</td>
+          <td>https://www.transtats.bts.gov/ot_delay/OT_DelayCause1.asp?20=E</td>
+        </tr>
+        <tr>
+          <td>Download_Column_Definitions.xlsx</td>
+          <td>Delay Dataset Dictionary</td>
+          <td>BTS</td>
+          <td>“”</td>
+        </tr>
+        <tr>
+          <td>master_coord.csv</td>
+          <td>lat/long data with airport codes</td>
+          <td>BTS</td>
+          <td>https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FLL&amp;QO_fu146_anzr=N8vn6v10%20f722146%20gnoyr5</td>
+        </tr>
+      </tbody>
+    </table>
+  </table-wrap>
+  <p>Military data available as shapefile/geoJson:
+  https://data-usdot.opendata.arcgis.com/datasets/usdot::military-bases/about</p>
+  <table-wrap>
+    <table>
+      <colgroup>
+        <col width="34%" />
+        <col width="33%" />
+        <col width="33%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Dataset</th>
+          <th>Source</th>
+          <th>Format</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Military Bases (geoJSON)</td>
+          <td>U.S. Dept. of Transportation Bureau of Transportation
+          Statistics</td>
+          <td>Multipolygon</td>
+        </tr>
+        <tr>
+          <td>Transportation Incidents</td>
+          <td>National Transportation Safety Board</td>
+          <td>Point</td>
+        </tr>
+      </tbody>
+    </table>
+  </table-wrap>
+</sec>
+</body>
+
+
+
+<back>
+</back>
+
+
+</sub-article>

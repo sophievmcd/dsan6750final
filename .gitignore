@@ -11,4 +11,4 @@
 
 **/*.quarto_ipynb
 
-/data/raw
+/data/raw/*.json
