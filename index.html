@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Sophie McDowall">
-<meta name="dcterms.date" content="2025-12-17">
-<meta name="keywords" content="aviation, flight delay, military mobility">
+<meta name="dcterms.date" content="2025-12-19">
+<meta name="keywords" content="aviation, infrastructure incidents, aviation incidents, military mobility">
 
 <title>Civilian Transportation Impacts and Proximity U.S. Military Bases</title>
 <style>
@@ -38,6 +38,9 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-575b51fb5e8da2a7cc0ded7321a6503a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script async="" src="https://hypothes.is/embed.js"></script>
 <script>
   window.document.addEventListener("DOMContentLoaded", function (_event) {
@@ -45,16 +48,45 @@ ul.task-list li input[type="checkbox"] {
   });
 </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <meta name="citation_title" content="Civilian Transportation Impacts and Proximity U.S. Military Bases">
-<meta name="citation_abstract" content="United States airline traffic has been significantly disrupted this year due to personnel cuts and the government shutdown. Aviation is critical for transportation and continuity of supply chain functioning. Civilian infrastructure also underpins the ability of the U.S. military to mobilize forces. In my analysis, I will use BTS airline delay data to identify relationships between commercial air traffic delays and proximity to U.S. military bases. Through this analysis, I aim to understand the prioritization of flights and the areas of highest impact resulting from cuts to TSA and air traffic control earlier this year, along with the potential impact of being nearer to a military base and whether these airports are prioritized in times of extreme delays.
+<meta name="citation_abstract" content="United States airline traffic has been significantly disrupted this year due to personnel cuts and the government shutdown. Aviation is critical for transportation and continuity of supply chain functioning. Civilian infrastructure also underpins the ability of the U.S. military to mobilize forces. In my analysis, I will use BTS airline delay data to identify relationships between commercial air traffic delays and aviation incidents and their proximity to U.S. military bases. Through this analysis, I aim to understand the trends surrounding aviation near military bases including trends in incident occurence rates and commercial flight delay impacts.
 ">
-<meta name="citation_keywords" content="aviation,flight delay,military mobility">
+<meta name="citation_keywords" content="aviation,infrastructure incidents,aviation incidents,military mobility">
 <meta name="citation_author" content="Sophie McDowall">
-<meta name="citation_publication_date" content="2025-12-17">
-<meta name="citation_cover_date" content="2025-12-17">
+<meta name="citation_publication_date" content="2025-12-19">
+<meta name="citation_cover_date" content="2025-12-19">
 <meta name="citation_year" content="2025">
-<meta name="citation_online_date" content="2025-12-17">
+<meta name="citation_online_date" content="2025-12-19">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Strategies for the development of volcanic hazard maps in monogenetic volcanic fields: The example of La Palma (Canary Islands);,citation_author=José Marrero;,citation_author=Alicia García;,citation_author=Manuel Berrocoso;,citation_author=Ángeles Llinares;,citation_author=Antonio Rodríguez-Losada;,citation_author=R. Ortiz;,citation_publication_date=2019-07;,citation_cover_date=2019-07;,citation_year=2019;,citation_doi=10.1186/s13617-019-0085-5;,citation_volume=8;,citation_journal_title=Journal of Applied Volcanology;">
 </head>
@@ -90,7 +122,7 @@ ul.task-list li input[type="checkbox"] {
                 <div>
             <div class="quarto-title-meta-heading">Published</div>
             <div class="quarto-title-meta-contents">
-              <p class="date">December 17, 2025</p>
+              <p class="date">December 19, 2025</p>
             </div>
           </div>
           
@@ -98,20 +130,20 @@ ul.task-list li input[type="checkbox"] {
               </div>
       </div>
       <div class="quarto-title-meta-column-end quarto-other-formats-target">
-      <div class="quarto-alternate-formats"><div class="quarto-title-meta-heading">Other Formats</div><div class="quarto-title-meta-contents"><p><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></p></div><div class="quarto-title-meta-contents"><p><a href="index-meca.zip" data-meca-link="true"><i class="bi bi-archive"></i>MECA Bundle</a></p></div></div></div>
+      </div>
     </div>
 
     <div>
       <div class="abstract">
         <div class="block-title">Abstract</div>
-        <p>United States airline traffic has been significantly disrupted this year due to personnel cuts and the government shutdown. Aviation is critical for transportation and continuity of supply chain functioning. Civilian infrastructure also underpins the ability of the U.S. military to mobilize forces. In my analysis, I will use BTS airline delay data to identify relationships between commercial air traffic delays and proximity to U.S. military bases. Through this analysis, I aim to understand the prioritization of flights and the areas of highest impact resulting from cuts to TSA and air traffic control earlier this year, along with the potential impact of being nearer to a military base and whether these airports are prioritized in times of extreme delays.</p>
+        <p>United States airline traffic has been significantly disrupted this year due to personnel cuts and the government shutdown. Aviation is critical for transportation and continuity of supply chain functioning. Civilian infrastructure also underpins the ability of the U.S. military to mobilize forces. In my analysis, I will use BTS airline delay data to identify relationships between commercial air traffic delays and aviation incidents and their proximity to U.S. military bases. Through this analysis, I aim to understand the trends surrounding aviation near military bases including trends in incident occurence rates and commercial flight delay impacts.</p>
       </div>
     </div>
 
     <div>
       <div class="keywords">
         <div class="block-title">Keywords</div>
-        <p>aviation, flight delay, military mobility</p>
+        <p>aviation, infrastructure incidents, aviation incidents, military mobility</p>
       </div>
     </div>
 
@@ -123,9 +155,25 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">0.1</span> Introduction</a></li>
+  <li><a href="#datasets" id="toc-datasets" class="nav-link" data-scroll-target="#datasets"><span class="header-section-number">0.2</span> Datasets</a></li>
+  <li><a href="#question-1-are-there-more-or-less-transportation-incidents-near-military-bases" id="toc-question-1-are-there-more-or-less-transportation-incidents-near-military-bases" class="nav-link" data-scroll-target="#question-1-are-there-more-or-less-transportation-incidents-near-military-bases"><span class="header-section-number">1</span> Question 1: Are there more or less transportation incidents near military bases?</a>
+  <ul class="collapse">
+  <li><a href="#approach" id="toc-approach" class="nav-link" data-scroll-target="#approach"><span class="header-section-number">1.1</span> Approach</a>
+  <ul class="collapse">
+  <li><a href="#basic-dataset-statistics---all-incidents" id="toc-basic-dataset-statistics---all-incidents" class="nav-link" data-scroll-target="#basic-dataset-statistics---all-incidents"><span class="header-section-number">1.1.1</span> Basic Dataset Statistics - All Incidents</a></li>
+  <li><a href="#basic-dataset-statistics---only-incidents-with-injuries" id="toc-basic-dataset-statistics---only-incidents-with-injuries" class="nav-link" data-scroll-target="#basic-dataset-statistics---only-incidents-with-injuries"><span class="header-section-number">1.1.2</span> Basic Dataset Statistics - Only Incidents with Injuries</a></li>
+  <li><a href="#monte-carlo-simulations-for-spatial-relationships-between-incidents-and-military-bases" id="toc-monte-carlo-simulations-for-spatial-relationships-between-incidents-and-military-bases" class="nav-link" data-scroll-target="#monte-carlo-simulations-for-spatial-relationships-between-incidents-and-military-bases"><span class="header-section-number">1.1.3</span> Monte Carlo Simulations for Spatial Relationships Between Incidents and Military Bases</a></li>
+  </ul></li>
+  <li><a href="#findings" id="toc-findings" class="nav-link" data-scroll-target="#findings"><span class="header-section-number">1.2</span> Findings</a>
+  <ul class="collapse">
+  <li><a href="#initial-findings---west-pacific-and-west-south-central-regions" id="toc-initial-findings---west-pacific-and-west-south-central-regions" class="nav-link" data-scroll-target="#initial-findings---west-pacific-and-west-south-central-regions"><span class="header-section-number">1.2.1</span> Initial Findings - West Pacific and West South Central Regions</a></li>
+  <li><a href="#national-findings-by-region" id="toc-national-findings-by-region" class="nav-link" data-scroll-target="#national-findings-by-region"><span class="header-section-number">1.2.2</span> National Findings by Region</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#conclusion-and-next-steps" id="toc-conclusion-and-next-steps" class="nav-link" data-scroll-target="#conclusion-and-next-steps"><span class="header-section-number">2</span> Conclusion and Next Steps</a></li>
   </ul>
-<div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="data/data_dict-preview.html"><i class="bi bi-journal-code"></i>Raw Data Dictionary</a></li></ul></div></nav>
+<div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="index-preview.html"><i class="bi bi-journal-code"></i>Article Notebook</a></li><li><a href="data/data_dict-preview.html"><i class="bi bi-journal-code"></i>Data Dictionary</a></li></ul></div></nav>
 </div>
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
 </div>
@@ -136,13 +184,263 @@ ul.task-list li input[type="checkbox"] {
   
 
 
-<section id="introduction" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
+<section id="introduction" class="level2" data-number="0.1">
+<h2 data-number="0.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">0.1</span> Introduction</h2>
 <p>The U.S. military relies on civilian infrastructure including highways, seaports, and airports to mobilize in the case of a national emergency or wartime. This research seeks to understand potential relationships between transportation incidents (accidents and delays) and proximity to military base, especially whether the length or likelihood of airline delays has any relation to military base proximity.</p>
 <ol type="1">
 <li><strong>Are there more or less transportation incidents near military bases?</strong></li>
 <li><strong>How does proximity to military bases impact delays at civilian airports?</strong></li>
 </ol>
+</section>
+<section id="datasets" class="level2" data-number="0.2">
+<h2 data-number="0.2" class="anchored" data-anchor-id="datasets"><span class="header-section-number">0.2</span> Datasets</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Dataset</th>
+<th>Source</th>
+<th>Format</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Military Bases (geoJSON)</td>
+<td>DOT Bureau of Transportation Statistics</td>
+<td>Multipolygon</td>
+<td><a href="https://data-usdot.opendata.arcgis.com/datasets/usdot::military-bases/about">https://data-usdot.opendata.arcgis.com/datasets/usdot::military-bases/about</a></td>
+</tr>
+<tr class="even">
+<td>Transportation Incidents (JSON)</td>
+<td>National Transportation Safety Board</td>
+<td>Point</td>
+<td><a href="https://data.ntsb.gov/carol-main-public/basic-search">https://data.ntsb.gov/carol-main-public/basic-search</a></td>
+</tr>
+<tr class="odd">
+<td>Airline Delays (CSV)</td>
+<td>DOT Bureau of Transportation Statistics</td>
+<td>Point - Needs geodata for airports</td>
+<td><a href="https://www.transtats.bts.gov/ot_delay/OT_DelayCause1.asp?20=E">https://www.transtats.bts.gov/ot_delay/OT_DelayCause1.asp?20=E</a></td>
+</tr>
+<tr class="even">
+<td>Airport Location (CSV)</td>
+<td>DOT Bureau of Transportation Statistics</td>
+<td>Point</td>
+<td><a href="https://geodata.bts.gov/datasets/usdot::aviation-facilities/explore">https://geodata.bts.gov/datasets/usdot::aviation-facilities/explore</a></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="question-1-are-there-more-or-less-transportation-incidents-near-military-bases" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Question 1: Are there more or less transportation incidents near military bases?</h1>
+<section id="approach" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="approach"><span class="header-section-number">1.1</span> Approach</h2>
+<p>In order to answer Question 1, I used data on the locations of U.S. military bases from the Department of Transportation and data on transportation incidents from the National Transportation Safety Board. After cleaning and combining the data as necessary for map visualizations and comparisons, I visualized the locations of bases and aviation incidents as shown in Figure 1. I excluded Alaska, Hawaii, and U.S. territories to focus only on the continental United States.</p>
+<p>To understand the makeup and initial trends in the data, I did basic exploratory data analysis for all of the data and for only aviation incidents with injuries.</p>
+<section id="basic-dataset-statistics---all-incidents" class="level3" data-number="1.1.1">
+<h3 data-number="1.1.1" class="anchored" data-anchor-id="basic-dataset-statistics---all-incidents"><span class="header-section-number">1.1.1</span> Basic Dataset Statistics - All Incidents</h3>
+<section id="temporal-visualization---all-incidents" class="level4" data-number="1.1.1.1">
+<h4 data-number="1.1.1.1" class="anchored" data-anchor-id="temporal-visualization---all-incidents"><span class="header-section-number">1.1.1.1</span> Temporal Visualization - All Incidents</h4>
+<p>By visualizing the temporal nature of the data, incident patterns or lack thereof can be identified. For all incidents, there has been a slight decline in number in recent years vs.&nbsp;the previoius five years, but this is also based on incomplete data for 2025. When looking at monthly trends, there is a much higher number of reported incidents in the summer months. This could be due to higher rates of travel, although it would seem that winter months are more dangerous in terms of weather conditions. This may lead to greater caution by operators.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="index_files/figure-html/basic-incident-eda-1-1-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="index_files/figure-html/basic-incident-eda-1-1-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<a class="quarto-notebook-link" id="nblink-1" href="index-preview.html">Source: Article Notebook</a></div>
+<p>Figure 1: Histogram of Incidents by Year from 2015-2025</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="index_files/figure-html/basic-incident-eda-1-2-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="index_files/figure-html/basic-incident-eda-1-2-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure 2: Monthly Distribution of Incidents for 2015-2025</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="index_files/figure-html/basic-incident-eda-1-3-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="index_files/figure-html/basic-incident-eda-1-3-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure 3: Heatmap distribution of monthly incidents by year. July 2017 saw the most incidents reported.</p>
+</section>
+<section id="incidents-by-type---all-incidents" class="level4" data-number="1.1.1.2">
+<h4 data-number="1.1.1.2" class="anchored" data-anchor-id="incidents-by-type---all-incidents"><span class="header-section-number">1.1.1.2</span> Incidents by Type - All Incidents</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   cm_mode     n
+1 Aviation 13656
+2   Marine   335
+3  Highway   113
+4 Railroad   109
+5 Pipeline    17
+6   Hazmat     3</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="index_files/figure-html/basic-incident-eda-2-1-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="index_files/figure-html/basic-incident-eda-2-1-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure 4: Line plot of temporal trends in incident count by Mode. Aviation incidents account for the vast majority of incidents reported.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="index_files/figure-html/basic-incident-eda-2-2-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="index_files/figure-html/basic-incident-eda-2-2-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure 4: Line plot of temporal trends in incident count by Mode, excluding aviation for more minute visual of other modes.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>  cm_highestInjury    n
+1             None 7859
+2            Fatal 2482
+3            Minor 2159
+4          Serious 1733</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="index_files/figure-html/basic-incident-eda-2-3-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="index_files/figure-html/basic-incident-eda-2-3-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure 5: Counts of Incidents by Injury Type</p>
+</section>
+</section>
+<section id="basic-dataset-statistics---only-incidents-with-injuries" class="level3" data-number="1.1.2">
+<h3 data-number="1.1.2" class="anchored" data-anchor-id="basic-dataset-statistics---only-incidents-with-injuries"><span class="header-section-number">1.1.2</span> Basic Dataset Statistics - Only Incidents with Injuries</h3>
+<p>Based on the high number of incidents without injuries, the following plots narrow the focus to only incidents that had any level of injury reported.</p>
+<section id="temporal-visualization---incidents-with-injuries" class="level4" data-number="1.1.2.1">
+<h4 data-number="1.1.2.1" class="anchored" data-anchor-id="temporal-visualization---incidents-with-injuries"><span class="header-section-number">1.1.2.1</span> Temporal Visualization - Incidents with Injuries</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="index_files/figure-html/basic-incident-eda-3-1-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="index_files/figure-html/basic-incident-eda-3-1-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure 6: Histogram of Incidents with Injuries by Year from 2015-2025</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="index_files/figure-html/basic-incident-eda-3-2-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="index_files/figure-html/basic-incident-eda-3-2-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure 7: Monthly Distribution of Incidents with Injuries for 2015-2025</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="index_files/figure-html/basic-incident-eda-3-3-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="index_files/figure-html/basic-incident-eda-3-3-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure 8: Heatmap distribution of monthly incidents by year. July 2017 saw the most incidents reported.</p>
+</section>
+<section id="incidents-by-type---incidents-with-injuries" class="level4" data-number="1.1.2.2">
+<h4 data-number="1.1.2.2" class="anchored" data-anchor-id="incidents-by-type---incidents-with-injuries"><span class="header-section-number">1.1.2.2</span> Incidents by Type - Incidents with Injuries</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="index_files/figure-html/basic-incident-eda-4-1-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10"><img src="index_files/figure-html/basic-incident-eda-4-1-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure 9: Line plot of temporal trends in incident count by Mode. Aviation incidents account for the vast majority of incidents reported.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="index_files/figure-html/basic-incident-eda-4-2-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img src="index_files/figure-html/basic-incident-eda-4-2-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure 10: Line plot of temporal trends in incident count for only incidents with injuries by Mode, excluding aviation for more minute visual of other modes.</p>
+</section>
+</section>
+<section id="monte-carlo-simulations-for-spatial-relationships-between-incidents-and-military-bases" class="level3" data-number="1.1.3">
+<h3 data-number="1.1.3" class="anchored" data-anchor-id="monte-carlo-simulations-for-spatial-relationships-between-incidents-and-military-bases"><span class="header-section-number">1.1.3</span> Monte Carlo Simulations for Spatial Relationships Between Incidents and Military Bases</h3>
+<p>Next, I calculated the observed mean distance of all incidents to the nearest military base. After recording this value, I ran 100-500 Monte Carlo simulations (dependent on region – less simulations because of the time required to run the analysis) and compared the distribution of Monte Carlo simulation results to the observed mean. I performed this test for the nine geographical regions of the U.S. individyally as defined by the U.S. Census Bureau to be able to run shorter pieces of code. I initially ran the analysis for the West Pacific region (WA, OR, CA) and the West South Central region (TX, OK, AR, LA) and after getting completely opposite results with a <span class="math inline">\(p\)</span>-value of 1 for the West Pacific and 0 for the West South Central I generalized the code to be able to run for all of the regions to compare. For publication purposes in the Quarto Manuscript, I ran on the slightly smaller injury-only dataset. Separately, I ran the full dataset and included those visuals for comparison.</p>
+<p><img src="images/regions_map.png" class="img-fluid" alt="Figure 11: U.S. Census Regions, Map from U.S. Census Bureau">.</p>
+</section>
+</section>
+<section id="findings" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="findings"><span class="header-section-number">1.2</span> Findings</h2>
+<section id="initial-findings---west-pacific-and-west-south-central-regions" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="initial-findings---west-pacific-and-west-south-central-regions"><span class="header-section-number">1.2.1</span> Initial Findings - West Pacific and West South Central Regions</h3>
+<p>I initially visualized and ran the proximity analysis for Washington, Oregon, and California only. This simulation testing resulted in a <span class="math inline">\(p\)</span>-value of 1 based on 100 Monte Carlo simulations, indicating that <strong>transportation incidents are <em>far less likely</em> to occur within close proximity to U.S. military bases.</strong>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/wc_map.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12" title="Figure 12: West Pacific Region Incident Map (Incidents in Blue, Military Bases in Red). Screenshot of mapview generation for rendering ability in Quarto Manuscript"><img src="images/wc_map.png" class="img-fluid figure-img" style="width:29.0%" alt="Figure 12: West Pacific Region Incident Map (Incidents in Blue, Military Bases in Red). Screenshot of mapview generation for rendering ability in Quarto Manuscript"></a></p>
+<figcaption>Figure 12: West Pacific Region Incident Map (Incidents in Blue, Military Bases in Red). Screenshot of mapview generation for rendering ability in Quarto Manuscript</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/all/WP_distance_distribution.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13" title="Figure 13: Monte Carlo Simulation Results - Distance to Nearest Base, West Pacific Region (All Incidents)"><img src="images/all/WP_distance_distribution.png" class="img-fluid figure-img" alt="Figure 13: Monte Carlo Simulation Results - Distance to Nearest Base, West Pacific Region (All Incidents)"></a></p>
+<figcaption>Figure 13: Monte Carlo Simulation Results - Distance to Nearest Base, West Pacific Region (All Incidents)</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/injury/WP_distance_distribution.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14" title="Figure 14: Monte Carlo Simulation Results - Distance to Nearest Base, West Pacific Region (Incidents with Injuries)"><img src="images/injury/WP_distance_distribution.png" class="img-fluid figure-img" alt="Figure 14: Monte Carlo Simulation Results - Distance to Nearest Base, West Pacific Region (Incidents with Injuries)"></a></p>
+<figcaption>Figure 14: Monte Carlo Simulation Results - Distance to Nearest Base, West Pacific Region (Incidents with Injuries)</figcaption>
+</figure>
+</div>
+<p>However, the same process ran for the West South Central Region including Texas, Oklahoma, Arkansas, and Louisiana yielded the opposite result as shown in Figure X. The results included a <span class="math inline">\(p\)</span>-value of 0 based on 100 Monte Carlo simulations, indicating that <strong>transportation incidents are <em>much more likely</em> to occur within close proximity to U.S. military bases.</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/all/WCS_distance_distribution.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15" title="Figure 15: Monte Carlo Simulation Results - Distance to Nearest Base, West South Central Region (All Incidents)"><img src="images/all/WCS_distance_distribution.png" class="img-fluid figure-img" alt="Figure 15: Monte Carlo Simulation Results - Distance to Nearest Base, West South Central Region (All Incidents)"></a></p>
+<figcaption>Figure 15: Monte Carlo Simulation Results - Distance to Nearest Base, West South Central Region (All Incidents)</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/injury/WCS_distance_distribution.png" class="lightbox" data-gallery="quarto-lightbox-gallery-16" title="Figure 16: Monte Carlo Simulation Results - Distance to Nearest Base, West South Central Region (Incidents with Injuries)"><img src="images/injury/WCS_distance_distribution.png" class="img-fluid figure-img" alt="Figure 16: Monte Carlo Simulation Results - Distance to Nearest Base, West South Central Region (Incidents with Injuries)"></a></p>
+<figcaption>Figure 16: Monte Carlo Simulation Results - Distance to Nearest Base, West South Central Region (Incidents with Injuries)</figcaption>
+</figure>
+</div>
+</section>
+<section id="national-findings-by-region" class="level3" data-number="1.2.2">
+<h3 data-number="1.2.2" class="anchored" data-anchor-id="national-findings-by-region"><span class="header-section-number">1.2.2</span> National Findings by Region</h3>
+<p>After running the same analysis for all of the census regions, the simulations yielded the following results:</p>
+<p><span class="math inline">\(p\)</span>-value = 1: West Pacific, South Atlantic</p>
+<p><span class="math inline">\(p\)</span>-value ~ 0: West South Central, West North Central, West Mountain, Middle Atlantic, New England, East South Central</p>
+<p>For regions that were majority coastal states, the <span class="math inline">\(p\)</span>-value was 1 and for majority in-land regions the <span class="math inline">\(p\)</span>-value was 0. This raises questions as to the reporting requirements for aviation incidents, especially as related to the water incidents. To attempt to account for missed incidents due to the bounding box, I expanded the initial bounding box for the regional limitations, but got the same results.</p>
+<p><em>Note: The code for each of these visualizations was run as a function that produces the resulting visuals. Code is visible in Article Notebook</em></p>
+</section>
+</section>
+</section>
+<section id="conclusion-and-next-steps" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Conclusion and Next Steps</h1>
+<p>Based on the above analysis, <strong>transportation incidents are <em>far less likely</em> to occur within close proximity to U.S. military bases along the coast and <em>far more likely</em> to occur within close proximity to non-coastal base regions.</strong></p>
+<p>This is an interesting result. One possible explanation for this trend is that the reporting requirements for coastal states do not extend much beyond the coast, meaning that some incidents are not being accounted for which may be in closer to proximity to military bases. The approach of narrowing incidents based on state may also have unintentionally excluded incidents that happened outside state boundaries over the oceans but were in close proximity. Another potential explanation is that military bases are generally situated in areas that are not the most concentrated urban centers. In coastal regions, urban centers are generally very high in population. In less populated states, population may be closer to military bases, leading to more air traffic in proximity to the bases. This trend could also depend on the type of base. If some bases are specific to air training, it is likely that there would be more incidents. A continuation of this research could do an in-depth analysis that identifies the general purpose of each base (as available, at least accounting for the main operating military branch) to assess this hypothesis.</p>
+<p>Due to time constraints, I was unable to finish answering the second question on whether air traffic delays are more common at airports that are in close proximity to a military base. This would be a useful analysis for understanding temporal changes related to changing policy and practice related to staffing for the TSA and air traffic roles. It would also identify potential impacts on commercial traffic during periods of military concern or potential military mobilization.</p>
 </section>
 
 </main>
@@ -548,6 +846,38 @@ ul.task-list li input[type="checkbox"] {
   });
   </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 
